@@ -1,0 +1,18 @@
+bin/
+obj/
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+*.log
+TestResults/
+artifacts/
+
+# Avalonia / .NET publish outputs
+publish/
+*.nupkg
+*.snupkg
