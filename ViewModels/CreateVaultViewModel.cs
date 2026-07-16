@@ -1,10 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 
 namespace Password_manager.ViewModels;
 
 public partial class CreateVaultViewModel : ViewModelBase
 {
+    public event Action? VaultCreated;
+
     [ObservableProperty]
     public partial string MasterPassword { get; set; } = string.Empty;
 
@@ -29,8 +32,6 @@ public partial class CreateVaultViewModel : ViewModelBase
             return;
         }
 
-        // Here you would add the logic to create the vault with the master password.
-        // For now, we'll just set a success message.
-        Message = "Vault created successfully!";
+        VaultCreated?.Invoke();
     }
 }

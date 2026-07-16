@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Password_manager.ViewModels"
+             x:Class="Password_manager.Views.VaultView"
+             x:DataType="vm:VaultViewModel">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="12">
+
+        <TextBlock Text="My Vault"
+                   FontSize="28" />
+
+        <TextBlock Text="Your saved passwords will appear here." />
+
+        <Button Content="Add password" />
+    </StackPanel>
+</UserControl>

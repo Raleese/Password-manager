@@ -16,6 +16,6 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <views:CreateVaultView DataContext="{Binding CreateVault}" />
+    <ContentControl Content="{Binding CurrentView}" />
 
 </Window>
