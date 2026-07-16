@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Password_manager.ViewModels"
+             x:Class="Password_manager.Views.CreateVaultView"
+             x:DataType="vm:CreateVaultViewModel">
+
+    <StackPanel 
+        Width="350"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Spacing="12">
+
+        <TextBlock 
+            Text="Create your password vault"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="24" />
+
+        <TextBlock 
+            Text="Choose a master password."
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" />
+
+        <TextBox 
+            Watermark="Master password"
+            PasswordChar="*"
+            Text="{Binding MasterPassword}" />
+
+        <TextBox
+            Watermark="Confirm master password"
+            PasswordChar="*"
+            Text="{Binding ConfirmMasterPassword}" />
+
+        <Button 
+            Content="Create vault"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"        
+            Command="{Binding CreateVaultCommand}" />
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" 
+            Text="{Binding Message}" />
+    </StackPanel>
+</UserControl>
