@@ -11,7 +11,7 @@
         Spacing="12">
 
         <TextBlock 
-            Text="Create your password vault"
+            Text="Create your vault"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="24" />
