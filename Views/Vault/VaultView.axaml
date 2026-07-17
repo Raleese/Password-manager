@@ -42,13 +42,13 @@
                 BorderThickness="1"
                 CornerRadius="16">
 
-                <ListBox
+                <ItemsControl
                     ItemsSource="{Binding PasswordEntries}"
                     Background="Transparent"
                     BorderThickness="0"
                     HorizontalAlignment="Stretch">
 
-                    <ListBox.ItemTemplate>
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate x:CompileBindings="False">
                             <Border
                                 Padding="14"
@@ -105,8 +105,8 @@
                                 </Grid>
                             </Border>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
         </Border>
     </Grid>
 </UserControl>
