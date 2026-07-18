@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Password_manager.Data;
 using System;
 
 namespace Password_manager.ViewModels;
@@ -31,7 +32,9 @@ public partial class CreateVaultViewModel : ViewModelBase
             Message = "Passwords do not match.";
             return;
         }
-
+        
+        DatabaseCreation.InitializeDatabase();
+        MasterHash.SaveMasterPassword(MasterPassword);
         VaultCreated?.Invoke();
     }
 }
