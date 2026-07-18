@@ -28,13 +28,46 @@
                     HorizontalAlignment="Center"
                     Opacity="0.7" />
 
+                <Grid
+                    Margin="0,16,0,0"
+                    ColumnDefinitions="2*,2*,2*,Auto"
+                    ColumnSpacing="8"
+                    HorizontalAlignment="Stretch">
+
+                    <TextBox
+                        PlaceholderText="Website"
+                        MaxLength="100" />
+
+                    <TextBox
+                        Grid.Column="1"
+                        PlaceholderText="Username"
+                        MaxLength="100" />
+
+                    <TextBox
+                        Grid.Column="2"
+                        PlaceholderText="Password"
+                        PasswordChar="*"
+                        MaxLength="100" />
+
+                    <Button
+                        Grid.Column="3"
+                        Content="Add new password"
+                        VerticalAlignment="Center"
+                        MinWidth="180"
+                        Click="AddNewPasswordButton_Click" />
+                </Grid>
+
+                <TextBox
+                    Text="{Binding SearchQuery, Mode=TwoWay}"
+                    PlaceholderText="Search passwords..."
+                    Margin="0,16,0,0" />
         </StackPanel>
 
         <Border
             Grid.Row="1"
             Margin="0,16,0,0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Top"
+            VerticalAlignment="Stretch"
             Width="760"
                 Padding="16"
                 Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
@@ -42,71 +75,75 @@
                 BorderThickness="1"
                 CornerRadius="16">
 
-                <ItemsControl
-                    ItemsSource="{Binding PasswordEntries}"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    HorizontalAlignment="Stretch">
+                <ScrollViewer
+                    VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Disabled">
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:CompileBindings="False">
-                            <Border
-                                Padding="14"
-                                Background="{DynamicResource SystemControlBackgroundAltLowBrush}"
-                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-                                BorderThickness="1"
-                                CornerRadius="12">
+                    <ItemsControl
+                        ItemsSource="{Binding FilteredPasswordEntries}"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalAlignment="Stretch">
 
-                                <Grid ColumnDefinitions="2*,2*,1.4*,Auto" ColumnSpacing="14" VerticalAlignment="Center">
-                                    <StackPanel Spacing="2">
-                                        <TextBlock
-                                            Text="{Binding Website}"
-                                            FontSize="16"
-                                            FontWeight="SemiBold" />
-                                        <TextBlock
-                                            Text="Website"
-                                            FontSize="11"
-                                            Opacity="0.55" />
-                                    </StackPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:CompileBindings="False">
+                                <Border
+                                    Padding="14"
+                                    Background="{DynamicResource SystemControlBackgroundAltLowBrush}"
+                                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="5">
 
-                                    <StackPanel Grid.Column="1" Spacing="2">
-                                        <TextBlock
-                                            Text="{Binding Username}"
-                                            FontSize="15" />
-                                        <TextBlock
-                                            Text="Username"
-                                            FontSize="11"
-                                            Opacity="0.55" />
-                                    </StackPanel>
+                                    <Grid ColumnDefinitions="2*,2*,1.4*,Auto" ColumnSpacing="14" VerticalAlignment="Center">
+                                        <StackPanel Spacing="2">
+                                            <TextBlock
+                                                Text="{Binding Website}"
+                                                FontSize="16"
+                                                FontWeight="SemiBold" />
+                                            <TextBlock
+                                                Text="Website"
+                                                FontSize="11"
+                                                Opacity="0.55" />
+                                        </StackPanel>
 
-                                    <StackPanel Grid.Column="2" Spacing="2">
-                                        <TextBlock
-                                            Text="{Binding Password}"
-                                            FontFamily="Consolas"
-                                            FontSize="15" />
-                                        <TextBlock
-                                            Text="Password"
-                                            FontSize="11"
-                                            Opacity="0.55" />
-                                    </StackPanel>
+                                        <StackPanel Grid.Column="1" Spacing="2">
+                                            <TextBlock
+                                                Text="{Binding Username}"
+                                                FontSize="15" />
+                                            <TextBlock
+                                                Text="Username"
+                                                FontSize="11"
+                                                Opacity="0.55" />
+                                        </StackPanel>
 
-                                    <StackPanel
-                                        Grid.Column="3"
-                                        Orientation="Horizontal"
-                                        Spacing="8"
-                                        VerticalAlignment="Center">
-                                        <Button
-                                            Content="Edit"
-                                            Click="EditButton_Click" />
-                                        <Button
-                                            Content="Delete"
-                                            Click="DeleteButton_Click" />
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                        <StackPanel Grid.Column="2" Spacing="2">
+                                            <TextBlock
+                                                Text="{Binding Password}"
+                                                FontSize="15" />
+                                            <TextBlock
+                                                Text="Password"
+                                                FontSize="11"
+                                                Opacity="0.55" />
+                                        </StackPanel>
+
+                                        <StackPanel
+                                            Grid.Column="3"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                            <Button
+                                                Content="Edit"
+                                                Click="EditButton_Click" />
+                                            <Button
+                                                Content="Delete"
+                                                Click="DeleteButton_Click" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>

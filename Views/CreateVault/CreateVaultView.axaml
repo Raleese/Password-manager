@@ -22,12 +22,12 @@
             VerticalAlignment="Center" />
 
         <TextBox 
-            Watermark="Master password"
+            PlaceholderText="Master password"
             PasswordChar="*"
             Text="{Binding MasterPassword}" />
 
         <TextBox
-            Watermark="Confirm master password"
+            PlaceholderText="Confirm master password"
             PasswordChar="*"
             Text="{Binding ConfirmMasterPassword}" />
 

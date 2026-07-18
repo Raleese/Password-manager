@@ -26,4 +26,12 @@ public partial class VaultView : UserControl
             viewModel.DeletePasswordEntryCommand.Execute(entry);
         }
     }
+
+    private void AddNewPasswordButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is VaultViewModel viewModel)
+        {
+            viewModel.AddPasswordEntryCommand.Execute(null);
+        }
+    }
 }
