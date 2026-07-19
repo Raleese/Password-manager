@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Password_manager.ViewModels"
+             x:Class="Password_manager.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
+
+    <StackPanel 
+        Width="350"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Spacing="12">
+
+        <TextBlock 
+            Text="Log into your vault"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="24" />
+
+        <TextBlock 
+            Text="Type your master password."
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" />
+
+        <TextBox 
+            PlaceholderText="Master password"
+            PasswordChar="*"
+            Text="{Binding MasterPassword}" />
+
+        <Button 
+            Content="Login"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"        
+            Command="{Binding LoginCommand}" />
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" 
+            Text="{Binding Message}" />
+    </StackPanel>
+</UserControl>
