@@ -13,11 +13,14 @@ public static class MasterHash
 
     public static bool IsVaultInitialized()
     {
+        // Ensure database and tables exist before checking
+        DatabaseCreation.InitializeDatabase();
+
         using var connection = DatabaseCreation.CreateConnection();
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(*) FROM VaultAuth;";
+        command.CommandText = "SELECT COUNT(*) FROM VaultAuth WHERE Id = 1;";
 
         var count = (long)command.ExecuteScalar()!;
         return count > 0;
@@ -39,7 +42,7 @@ public static class MasterHash
             ON CONFLICT(Id) DO UPDATE SET
                 Salt = excluded.Salt,
                 Hash = excluded.Hash,
-                CreatedAt = excluded.CreatedAT;
+                CreatedAt = excluded.CreatedAt;
         """;
         command.Parameters.AddWithValue("$salt", salt);
         command.Parameters.AddWithValue("$hash", hash);
@@ -66,8 +69,8 @@ public static class MasterHash
             return false;
         }
 
-        var storedHash = (byte[])reader["Salt"];
-        var storedSalt = (byte[])reader["Hash"];
+        var storedSalt = (byte[])reader["Salt"];
+        var storedHash = (byte[])reader["Hash"];
 
         var enteredHash = HashPassword(enteredPassword, storedSalt);
 

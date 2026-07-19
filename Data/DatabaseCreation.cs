@@ -15,6 +15,12 @@ public static class DatabaseCreation
 
     public static SqliteConnection CreateConnection()
     {
+        var directory = Path.GetDirectoryName(DatabasePath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
         return new SqliteConnection(ConnectionString);
     }
 
