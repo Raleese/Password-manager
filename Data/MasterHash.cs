@@ -29,6 +29,7 @@ public static class MasterHash
     public static void SaveMasterPassword(string masterPassword)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
+        var encryptionSalt = RandomNumberGenerator.GetBytes(SaltSize);
         var hash = HashPassword(masterPassword, salt);
         var date = DateTime.Now;
 
@@ -37,14 +38,16 @@ public static class MasterHash
 
         var command = connection.CreateCommand();
         command.CommandText = """
-            INSERT INTO VaultAuth (Id, Salt, Hash, CreatedAt)
-            VALUES (1, $salt, $hash, $date)
+            INSERT INTO VaultAuth (Id, PasswordSalt, EncryptionSalt, PasswordHash, CreatedAt)
+            VALUES (1, $salt, $encryptionSalt, $hash, $date)
             ON CONFLICT(Id) DO UPDATE SET
-                Salt = excluded.Salt,
-                Hash = excluded.Hash,
+                PasswordSalt = excluded.PasswordSalt,
+                EncryptionSalt = excluded.EncryptionSalt,
+                PasswordHash = excluded.PasswordHash,
                 CreatedAt = excluded.CreatedAt;
         """;
         command.Parameters.AddWithValue("$salt", salt);
+        command.Parameters.AddWithValue("$encryptionSalt", encryptionSalt);
         command.Parameters.AddWithValue("$hash", hash);
         command.Parameters.AddWithValue("$date", date);
         command.ExecuteNonQuery();
@@ -57,7 +60,7 @@ public static class MasterHash
 
         using var command = connection.CreateCommand();
         command.CommandText = """
-            SELECT Salt, Hash
+            SELECT PasswordSalt, EncryptionSalt, PasswordHash
             FROM VaultAuth
             WHERE Id = 1;
         """;
@@ -69,8 +72,9 @@ public static class MasterHash
             return false;
         }
 
-        var storedSalt = (byte[])reader["Salt"];
-        var storedHash = (byte[])reader["Hash"];
+        var storedSalt = (byte[])reader["PasswordSalt"];
+        var storedEncryptionSalt = (byte[])reader["EncryptionSalt"];
+        var storedHash = (byte[])reader["PasswordHash"];
 
         var enteredHash = HashPassword(enteredPassword, storedSalt);
 
