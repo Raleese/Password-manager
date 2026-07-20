@@ -48,6 +48,7 @@ public static class DatabaseCreation
             CREATE TABLE IF NOT EXISTS VaultAuth (
                 Id INTEGER PRIMARY KEY CHECK (Id = 1),
                 Salt BLOB NOT NULL,
+                EncryptionSalt BLOB NOT NULL,
                 Hash BLOB NOT NULL,
                 CreatedAt DATETIME NOT NULL
             );
