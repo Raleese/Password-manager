@@ -35,7 +35,9 @@ public static class DatabaseCreation
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Website TEXT NOT NULL,
                 Username TEXT NOT NULL,
-                Password TEXT NOT NULL
+                Nonce BLOB NOT NULL,
+                Password BLOB NOT NULL,
+                CreatedAt DATETIME NOT NULL,
             );
             """;
         createTableCommand.ExecuteNonQuery();
