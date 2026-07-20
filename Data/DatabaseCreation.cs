@@ -36,6 +36,7 @@ public static class DatabaseCreation
                 Website TEXT NOT NULL,
                 Username TEXT NOT NULL,
                 Nonce BLOB NOT NULL,
+                Tag BLOB NOT NULL,
                 Password BLOB NOT NULL,
                 CreatedAt DATETIME NOT NULL,
             );
