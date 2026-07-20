@@ -14,19 +14,6 @@ public partial class VaultViewModel : ViewModelBase
 
     public ObservableCollection<PasswordEntry> PasswordEntries { get; } = new()
     {
-        new PasswordEntry { Website = "example.com", Username = "user1", Password = "password1" },
-        new PasswordEntry { Website = "example.org", Username = "user2", Password = "password2" },
-        new PasswordEntry { Website = "example.net", Username = "user3", Password = "password3" },
-        new PasswordEntry { Website = "example.com", Username = "user1", Password = "password1" },
-        new PasswordEntry { Website = "example.org", Username = "user2", Password = "password2" },
-        new PasswordEntry { Website = "example.com", Username = "user1", Password = "password1" },
-        new PasswordEntry { Website = "example.org", Username = "user2", Password = "password2" },
-        new PasswordEntry { Website = "example.com", Username = "user1", Password = "password1" },
-        new PasswordEntry { Website = "example.org", Username = "user2", Password = "password2" },
-        new PasswordEntry { Website = "example.com", Username = "user1", Password = "password1" },
-        new PasswordEntry { Website = "example.org", Username = "user2", Password = "password2" },
-        new PasswordEntry { Website = "example.com", Username = "user1", Password = "password1" },
-        new PasswordEntry { Website = "example.org", Username = "user2", Password = "password2" },
     };
 
     public ObservableCollection<PasswordEntry> FilteredPasswordEntries { get; } = new();
@@ -61,8 +48,7 @@ public partial class VaultViewModel : ViewModelBase
         var query = SearchQuery.Trim();
 
         return entry.Website.Contains(query, StringComparison.OrdinalIgnoreCase)
-            || entry.Username.Contains(query, StringComparison.OrdinalIgnoreCase)
-            || entry.Password.Contains(query, StringComparison.OrdinalIgnoreCase);
+            || entry.Username.Contains(query, StringComparison.OrdinalIgnoreCase);
     }
 
     [RelayCommand]
