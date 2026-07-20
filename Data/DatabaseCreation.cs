@@ -38,7 +38,7 @@ public static class DatabaseCreation
                 Nonce BLOB NOT NULL,
                 Tag BLOB NOT NULL,
                 Password BLOB NOT NULL,
-                CreatedAt DATETIME NOT NULL,
+                CreatedAt DATETIME NOT NULL
             );
             """;
         createTableCommand.ExecuteNonQuery();
