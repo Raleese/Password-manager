@@ -7,5 +7,5 @@ public class PasswordEntry
     public string Username { get; set; } = string.Empty;
     public byte[] Nonce { get; set; } = [];
     public byte[] Tag { get; set; } = [];
-    public byte[] Password { get; set; } = [];
+    public string Password { get; set; } = string.Empty;
 }
