@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
-using System.IO;
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Password_manager.Data;
 
@@ -47,12 +48,49 @@ public static class DatabaseCreation
         createVaultAuthTableCommand.CommandText = """
             CREATE TABLE IF NOT EXISTS VaultAuth (
                 Id INTEGER PRIMARY KEY CHECK (Id = 1),
-                Salt BLOB NOT NULL,
+                PasswordSalt BLOB NOT NULL,
                 EncryptionSalt BLOB NOT NULL,
-                Hash BLOB NOT NULL,
+                PasswordHash BLOB NOT NULL,
                 CreatedAt DATETIME NOT NULL
             );
             """;
         createVaultAuthTableCommand.ExecuteNonQuery();
+
+        MigrateVaultAuthSchema(connection);
+    }
+
+    private static void MigrateVaultAuthSchema(SqliteConnection connection)
+    {
+        var columns = new List<string>();
+
+        using (var command = connection.CreateCommand())
+        {
+            command.CommandText = "PRAGMA table_info(VaultAuth);";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                columns.Add(reader.GetString(1));
+            }
+        }
+
+        if (columns.Count == 0 || columns.Contains("PasswordSalt"))
+        {
+            return;
+        }
+
+        if (columns.Contains("Salt"))
+        {
+            using var renameSalt = connection.CreateCommand();
+            renameSalt.CommandText = "ALTER TABLE VaultAuth RENAME COLUMN Salt TO PasswordSalt;";
+            renameSalt.ExecuteNonQuery();
+        }
+
+        if (columns.Contains("Hash"))
+        {
+            using var renameHash = connection.CreateCommand();
+            renameHash.CommandText = "ALTER TABLE VaultAuth RENAME COLUMN Hash TO PasswordHash;";
+            renameHash.ExecuteNonQuery();
+        }
     }
 }
