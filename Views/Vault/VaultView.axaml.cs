@@ -34,4 +34,11 @@ public partial class VaultView : UserControl
             viewModel.AddPasswordEntryCommand.Execute(null);
         }
     }
+    private void ViewButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is VaultViewModel viewModel && sender is Button button && button.DataContext is PasswordEntry entry)
+        {
+            viewModel.ViewPasswordCommand.Execute(entry);
+        }
+    }
 }

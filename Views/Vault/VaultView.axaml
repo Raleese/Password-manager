@@ -121,7 +121,7 @@
 
                                         <StackPanel Grid.Column="2" Spacing="2">
                                             <TextBlock
-                                                Text="{Binding Password}"
+                                                Text="{Binding DisplayPassword}"
                                                 FontSize="15" />
                                             <TextBlock
                                                 Text="Password"
@@ -134,6 +134,9 @@
                                             Orientation="Horizontal"
                                             Spacing="8"
                                             VerticalAlignment="Center">
+                                            <Button
+                                                Content="View"
+                                                Click="ViewButton_Click" />
                                             <Button
                                                 Content="Edit"
                                                 Click="EditButton_Click" />
