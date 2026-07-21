@@ -1,5 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Security.Cryptography;
+using System.Text;
+using Konscious.Security.Cryptography;
 using Microsoft.Data.Sqlite;
 using Password_manager.Models;
 
@@ -9,7 +12,8 @@ public static class MasterHash
 {
     private const int SaltSize = 16; // Size of the salt in bytes
     private const int HashSize = 32; // Size of the hash in bytes
-    private const int Iterations = 100000; // Number of iterations for PBKDF2
+    private const int Iterations = 4; // Number of iterations for PBKDF2
+    private const int MemorySize = 64 *1024;
 
     public static bool IsVaultInitialized()
     {
@@ -69,7 +73,7 @@ public static class MasterHash
 
         using var command = connection.CreateCommand();
         command.CommandText = """
-            SELECT PasswordSalt, EncryptionSalt, PasswordHash
+            SELECT PasswordSalt, PasswordHash
             FROM VaultAuth
             WHERE Id = 1;
         """;
@@ -82,7 +86,6 @@ public static class MasterHash
         }
 
         var storedSalt = (byte[])reader["PasswordSalt"];
-        var storedEncryptionSalt = (byte[])reader["EncryptionSalt"];
         var storedHash = (byte[])reader["PasswordHash"];
 
         var enteredHash = HashPassword(enteredPassword, storedSalt);
@@ -92,7 +95,14 @@ public static class MasterHash
 
     public static byte[] HashPassword(string password, byte[] salt)
     {
-        return Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA256, HashSize);
+        var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
+        {
+            Salt = salt,
+            DegreeOfParallelism = Environment.ProcessorCount,
+            MemorySize = MemorySize,
+            Iterations = Iterations,
+        };
+        return argon2.GetBytes(HashSize);
     }
 
     public static byte[] GetEncryptionSalt()
