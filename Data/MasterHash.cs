@@ -26,7 +26,7 @@ public static class MasterHash
         return count > 0;
     }
 
-    public static void SaveMasterPassword(string masterPassword)
+    public static VaultAuthRecord SaveMasterPassword(string masterPassword)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
         var encryptionSalt = RandomNumberGenerator.GetBytes(SaltSize);
@@ -51,6 +51,15 @@ public static class MasterHash
         command.Parameters.AddWithValue("$hash", hash);
         command.Parameters.AddWithValue("$date", date);
         command.ExecuteNonQuery();
+
+        return new VaultAuthRecord
+        {
+            Id = 1,
+            PasswordSalt = salt,
+            EncryptionSalt = encryptionSalt,
+            PasswordHash = hash,
+            CreatedAt = date
+        };
     }
 
     public static bool VerifyMasterPassword(string enteredPassword)
@@ -84,5 +93,28 @@ public static class MasterHash
     public static byte[] HashPassword(string password, byte[] salt)
     {
         return Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA256, HashSize);
+    }
+
+    public static byte[] GetEncryptionSalt()
+    {
+        using var connection = DatabaseCreation.CreateConnection();
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = """
+            SELECT PasswordSalt, EncryptionSalt
+            FROM VaultAuth
+            WHERE Id = 1;
+        """;
+
+        using var reader = command.ExecuteReader();
+
+        if (!reader.Read())
+        {
+            throw new InvalidOperationException("VaultAuth record not found.");
+        }
+
+        var encryptionSalt = (byte[])reader["EncryptionSalt"];
+        return encryptionSalt;
     }
 }
