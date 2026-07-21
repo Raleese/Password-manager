@@ -55,42 +55,5 @@ public static class DatabaseCreation
             );
             """;
         createVaultAuthTableCommand.ExecuteNonQuery();
-
-        MigrateVaultAuthSchema(connection);
-    }
-
-    private static void MigrateVaultAuthSchema(SqliteConnection connection)
-    {
-        var columns = new List<string>();
-
-        using (var command = connection.CreateCommand())
-        {
-            command.CommandText = "PRAGMA table_info(VaultAuth);";
-
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                columns.Add(reader.GetString(1));
-            }
-        }
-
-        if (columns.Count == 0 || columns.Contains("PasswordSalt"))
-        {
-            return;
-        }
-
-        if (columns.Contains("Salt"))
-        {
-            using var renameSalt = connection.CreateCommand();
-            renameSalt.CommandText = "ALTER TABLE VaultAuth RENAME COLUMN Salt TO PasswordSalt;";
-            renameSalt.ExecuteNonQuery();
-        }
-
-        if (columns.Contains("Hash"))
-        {
-            using var renameHash = connection.CreateCommand();
-            renameHash.CommandText = "ALTER TABLE VaultAuth RENAME COLUMN Hash TO PasswordHash;";
-            renameHash.ExecuteNonQuery();
-        }
     }
 }
