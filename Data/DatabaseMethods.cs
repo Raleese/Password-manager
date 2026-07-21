@@ -30,6 +30,19 @@ public static class DatabaseMethods
         command.ExecuteNonQuery();
     }
 
+    public static void RemovePassword(string id)
+    {
+        using var connection = DatabaseCreation.CreateConnection();
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = """
+            DELETE FROM PasswordEntries WHERE id=$id;
+        """;
+        command.Parameters.AddWithValue("$id", id);
+        command.ExecuteNonQuery();
+    }
+
     public static List<PasswordEntry> GetPasswords()
     {
         var entries = new List<PasswordEntry>();
