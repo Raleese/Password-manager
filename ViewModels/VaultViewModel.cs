@@ -3,12 +3,22 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Password_manager.Data;
 using Password_manager.Models;
 
 namespace Password_manager.ViewModels;
 
 public partial class VaultViewModel : ViewModelBase
 {
+    [ObservableProperty]
+    public partial string Website { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string Username { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string Password { get; set; } = string.Empty;
+
     [ObservableProperty]
     public partial string SearchQuery { get; set; } = string.Empty;
 
@@ -20,7 +30,23 @@ public partial class VaultViewModel : ViewModelBase
 
     public VaultViewModel()
     {
+        LoadPasswords();
         RefreshFilteredEntries();
+    }
+
+    private void LoadPasswords()
+    {
+        PasswordEntries.Clear();
+
+        if (!VaultSession.IsUnlocked)
+        {
+            return;
+        }
+
+        foreach (var entry in DatabaseMethods.GetPasswords())
+        {
+            PasswordEntries.Add(entry);
+        }
     }
 
     partial void OnSearchQueryChanged(string value)
@@ -70,7 +96,15 @@ public partial class VaultViewModel : ViewModelBase
     [RelayCommand]
     private void AddPasswordEntry()
     {
-        // Implement the logic to add a new password entry
+        if (string.IsNullOrWhiteSpace(Website) || string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+        {
+            return;
+        }
+        DatabaseMethods.AddPassword(Website, Username, Password);
+        LoadPasswords();
         RefreshFilteredEntries();
+        Website = string.Empty;
+        Username = string.Empty;
+        Password = string.Empty;
     }
 }
