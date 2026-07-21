@@ -21,10 +21,14 @@ public partial class LoginViewModel : ViewModelBase
         if (string.IsNullOrEmpty(MasterPassword))
         {
             Message = "Enter your password.";
+            return;
         }
 
         if (MasterHash.VerifyMasterPassword(MasterPassword))
         {
+            var encryptionSalt = MasterHash.GetEncryptionSalt();
+            var vaultKey = VaultCrypto.DeriveKey(MasterPassword, encryptionSalt);
+            VaultSession.Unlock(vaultKey);
             LoggedIn?.Invoke();
             return;
         }
