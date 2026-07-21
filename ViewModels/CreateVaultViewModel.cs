@@ -34,7 +34,9 @@ public partial class CreateVaultViewModel : ViewModelBase
         }
         
         DatabaseCreation.InitializeDatabase();
-        MasterHash.SaveMasterPassword(MasterPassword);
+        var authRecord = MasterHash.SaveMasterPassword(MasterPassword);
+        var vaultKey = VaultCrypto.DeriveKey(MasterPassword, authRecord.EncryptionSalt);
+        VaultSession.Unlock(vaultKey);
         VaultCreated?.Invoke();
     }
 }
