@@ -36,16 +36,19 @@
 
                     <TextBox
                         PlaceholderText="Website"
+                        Text="{Binding Website, Mode=TwoWay}"
                         MaxLength="100" />
 
                     <TextBox
                         Grid.Column="1"
                         PlaceholderText="Username"
+                        Text="{Binding Username, Mode=TwoWay}"
                         MaxLength="100" />
 
                     <TextBox
                         Grid.Column="2"
                         PlaceholderText="Password"
+                        Text="{Binding Password, Mode=TwoWay}"
                         PasswordChar="*"
                         MaxLength="100" />
 
