@@ -107,4 +107,13 @@ public partial class VaultViewModel : ViewModelBase
         Username = string.Empty;
         Password = string.Empty;
     }
+
+    [RelayCommand]
+    private void ViewPassword(PasswordEntry entry)
+    {
+        if (entry != null)
+        {
+            entry.IsPasswordVisible = !entry.IsPasswordVisible;
+        }
+    }
 }
