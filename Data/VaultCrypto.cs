@@ -1,11 +1,15 @@
 using System.Security.Cryptography;
 using Konscious.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace Password_manager.Data;
 
 public static class VaultCrypto
 {
+    private const int MemorySize = 64 *1024;
+    private const int Iterations = 4;
+
     public static (byte[] Nonce, byte[] Ciphertext, byte[] Tag) Encrypt(string plaintext, byte[] key)
     {
         byte[] plaintextBytes = Encoding.UTF8.GetBytes(plaintext);
@@ -36,9 +40,9 @@ public static class VaultCrypto
         var argon2 = new Argon2id(Encoding.UTF8.GetBytes(masterPassword))
         {
             Salt = salt,
-            DegreeOfParallelism = 8, // Number of threads to use
-            MemorySize = 64 * 1024, // 64 MB
-            Iterations = 4 // Number of iterations
+            DegreeOfParallelism = Environment.ProcessorCount, // Number of threads to use
+            MemorySize = MemorySize, // 64 MB
+            Iterations = Iterations // Number of iterations
         };
 
         return argon2.GetBytes(32); // Return 32 bytes (256 bits) for the encryption key
