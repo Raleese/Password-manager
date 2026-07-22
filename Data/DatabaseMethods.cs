@@ -30,7 +30,7 @@ public static class DatabaseMethods
         command.ExecuteNonQuery();
     }
 
-    public static void RemovePassword(string id)
+    public static void RemovePassword(int id)
     {
         using var connection = DatabaseCreation.CreateConnection();
         connection.Open();
