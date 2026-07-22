@@ -89,6 +89,7 @@ public partial class VaultViewModel : ViewModelBase
         if (entry != null)
         {
             PasswordEntries.Remove(entry);
+            DatabaseMethods.RemovePassword(entry.Id);
             RefreshFilteredEntries();
         }
     }
